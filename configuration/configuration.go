@@ -11,8 +11,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-//Configuration es la estructura para config.json
-type Configuration struct {
+type configuration struct {
 	Server   string
 	Port     string
 	User     string
@@ -20,9 +19,8 @@ type Configuration struct {
 	Database string
 }
 
-//GetConfiguration es una funcion que retorna la configuracion
-func GetConfiguration() Configuration {
-	var c Configuration
+func getConfiguration() configuration {
+	var c configuration
 	file, err := os.Open("./config.json")
 	if err != nil {
 		log.Fatal(err)
@@ -37,9 +35,9 @@ func GetConfiguration() Configuration {
 	return c
 }
 
-//GetConnection obtiene una conexion a la 	BD
+//GetConnection obtiene una conexión a la BD
 func GetConnection() *gorm.DB {
-	c := GetConfiguration()
+	c := getConfiguration()
 	//"user:password@tcp(server:port)/database?charset=utf8&parseTime=True&loc=Local"
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		c.User,

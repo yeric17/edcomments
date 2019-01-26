@@ -2,7 +2,7 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-//User es el modelo
+//User usuario del sistema
 type User struct {
 	gorm.Model
 	Username        string    `json:"username" gorm:"not null;unique"`

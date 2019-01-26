@@ -2,7 +2,8 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-//Vote es un modelo de BD
+//Vote permite controlar que un usuario solo
+//vote una única vex por cada comentario
 type Vote struct {
 	gorm.Model
 	CommentID uint `json:"commentId" gorm:"not null"`

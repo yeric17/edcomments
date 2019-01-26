@@ -5,7 +5,7 @@ import (
 	"github.com/yeric17/edcomments/models"
 )
 
-//Migrate es una funcion para migrar la base de datos
+//Migrate permite crear las tablas en la bd
 func Migrate() {
 	db := configuration.GetConnection()
 	defer db.Close()
