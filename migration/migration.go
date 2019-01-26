@@ -1,8 +1,8 @@
 package migration
 
 import (
-	"github.com/edcomments/configuration"
-	"github.com/edcomments/models"
+	"github.com/yeric17/edcomments/configuration"
+	"github.com/yeric17/edcomments/models"
 )
 
 //Migrate es una funcion para migrar la base de datos

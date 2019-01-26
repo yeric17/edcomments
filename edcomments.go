@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/edcomments/migration"
+	"github.com/yeric17/edcomments/migration"
 )
 
 func main() {
