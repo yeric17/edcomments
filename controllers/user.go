@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"crypto/md5"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
@@ -48,4 +49,48 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 		commons.DisplayMessage(w, m)
 	}
+}
+
+//UserCreate permite registrar un Usuario
+func UserCreate(w http.ResponseWriter, r *http.Request) {
+	user := models.User{}
+	m := models.Message{}
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		m.Message = fmt.Sprintf("Error al leer el usuario a registrar: %s", err)
+		m.Code = http.StatusBadRequest
+		commons.DisplayMessage(w, m)
+		return
+	}
+
+	if user.Password != user.ConfirmPassword {
+		m.Message = "Las contraseñas no coinciden"
+		m.Code = http.StatusBadRequest
+		commons.DisplayMessage(w, m)
+		return
+	}
+
+	c := sha256.Sum256([]byte(user.Password))
+	pwd := fmt.Sprintf("%x", c)
+	user.Password = pwd
+
+	picmd5 := md5.Sum([]byte(user.Email))
+	picstr := fmt.Sprintf("%x", picmd5)
+	user.Picture = "https://gravatar.com/avatar/" + picstr + "?s=100"
+
+	db := configuration.GetConnection()
+	defer db.Close()
+
+	err = db.Create(&user).Error
+	if err != nil {
+		m.Message = fmt.Sprintf("Error al crear el registro: %s", err)
+		m.Code = http.StatusBadRequest
+		commons.DisplayMessage(w, m)
+		return
+	}
+
+	m.Message = "Usuario creado con éxito"
+	m.Code = http.StatusCreated
+	commons.DisplayMessage(w, m)
 }
