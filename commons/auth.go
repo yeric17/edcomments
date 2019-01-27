@@ -45,7 +45,7 @@ func GenerateJWT(user models.User) string {
 			Issuer: "Escuela Digital",
 		},
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 	result, err := token.SignedString(privateKey)
 	if err != nil {
 		log.Fatal("No se pudo firmar el token")
