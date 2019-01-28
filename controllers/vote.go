@@ -12,7 +12,7 @@ import (
 	"github.com/yeric17/edcomments/models"
 )
 
-//VoteRegister controlador para registrar un voto
+// VoteRegister controlador para registrar un voto
 func VoteRegister(w http.ResponseWriter, r *http.Request) {
 	vote := models.Vote{}
 	user := models.User{}
@@ -32,7 +32,7 @@ func VoteRegister(w http.ResponseWriter, r *http.Request) {
 	db := configuration.GetConnection()
 	defer db.Close()
 
-	db.Where("comment_id = ? and user_id ?", vote.CommentID, vote.UserID).First(&currentVote)
+	db.Where("comment_id = ? and user_id = ?", vote.CommentID, vote.UserID).First(&currentVote)
 
 	// Si no existe
 	if currentVote.ID == 0 {
@@ -69,8 +69,8 @@ func VoteRegister(w http.ResponseWriter, r *http.Request) {
 	commons.DisplayMessage(w, m)
 }
 
-//updateCommentVotes actualiza la cantidad de votos en la tabla comentarios
-//isUpdate indica si es un voto para actualizar
+// updateCommentVotes actualiza la cantidad de votos en la tabla comentarios
+// isUpdate indica si es un voto para actualizar
 func updateCommentVotes(commentID uint, vote bool, isUpdate bool) (err error) {
 	comment := models.Comment{}
 
@@ -93,7 +93,7 @@ func updateCommentVotes(commentID uint, vote bool, isUpdate bool) (err error) {
 		}
 		db.Save(&comment)
 	} else {
-		err = errors.New("no se encontró un registro de comentario para asignarle el voto")
+		err = errors.New("No se encontró un registro de comentario para asignarle el voto")
 	}
 	return
 }
