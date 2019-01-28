@@ -15,7 +15,10 @@ import (
 //CommentCreate permite registrar un comentario
 func CommentCreate(w http.ResponseWriter, r *http.Request) {
 	comment := models.Comment{}
+	user := models.User{}
 	m := models.Message{}
+
+	user, _ = r.Context().Value("user").(models.User)
 
 	err := json.NewDecoder(r.Body).Decode(&comment)
 	if err != nil {
@@ -24,6 +27,8 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		commons.DisplayMessage(w, m)
 		return
 	}
+
+	comment.UserID = user.ID
 
 	db := configuration.GetConnection()
 	defer db.Close()
@@ -48,7 +53,7 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	user := models.User{}
 	vote := models.Vote{}
 
-	r.Context().Value(&user)
+	user, _ = r.Context().Value("user").(models.User)
 	vars := r.URL.Query()
 
 	db := configuration.GetConnection()
